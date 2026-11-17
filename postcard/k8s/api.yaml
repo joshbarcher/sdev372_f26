@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postcard-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: postcard-api
+  template:
+    metadata:
+      labels:
+        app: postcard-api
+    spec:
+      containers:
+        - name: api
+          image: sdev372/postcard-api:1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postcard
+                  key: DATABASE_URL
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: postcard
+                  key: ADMIN_TOKEN
+            - name: APP_VERSION
+              value: "1.0.0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # Named `api` because that is the hostname the front end asks for, and it is
+  # the same hostname it asked for under Compose. The Service name IS the DNS
+  # name -- which is the one idea this file exists to make concrete.
+  name: api
+spec:
+  # ClusterIP: reachable inside the cluster, nowhere else. The front end talks
+  # to it by name; nothing outside can.
+  type: ClusterIP
+  selector:
+    app: postcard-api
+  ports:
+    - port: 8080
+      targetPort: 8080
