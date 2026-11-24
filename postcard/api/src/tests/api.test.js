@@ -7,20 +7,20 @@ const UTC_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/
 let store = null;
 
 beforeAll(() => {
-    console.log("before all")
+    //console.log("before all")
 })
 
 afterAll(() => {
-    console.log("after all")
+    //console.log("after all")
 })
 
 beforeEach(() => {
     store = createMemoryStore({ seed: false });
-    console.log("before")
+    //console.log("before")
 })
 
 afterEach(() => {
-    console.log("after")
+    //console.log("after")
 })
 
 describe("in memory store", () => {
@@ -68,7 +68,7 @@ describe("in memory store", () => {
 
         const postcards = await store.all();
         const added = postcards[0];
-        console.log(added);
+        //console.log(added);
 
         expect(added).toHaveProperty("id");
         expect(added.id).toMatch(UUID_REGEX);

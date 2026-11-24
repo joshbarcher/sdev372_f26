@@ -53,7 +53,11 @@ export function createMemoryStore({ seed = true } = {}) {
 			return rows.map(card);
 		},
 		async add({ place, message }) {
-			const row = { id: randomUUID(), place, message, sentAt: new Date().toISOString() };
+			const row = { id: randomUUID(), 
+                place, 
+                message, 
+                sentAt: new Date().toISOString() 
+            };
 			rows = [row, ...rows];
 			return card(row);
 		},
